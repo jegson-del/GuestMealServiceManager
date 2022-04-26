@@ -2,32 +2,25 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Actions\RegisterUsersAction;
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use Illuminate\Http\Request;
+use App\Http\Requests\RegistrationRequest;
 use Throwable;
 
 class RegistrationController extends Controller
 {
-    public function register (Request $request): bool
+    public function register (RegistrationRequest $request, RegisterUsersAction $action)
     {
         try {
-            $request->validate([
-                'email' => 'required|email',
-                'password' => 'required|confirmed',
-                'phone' => 'required',
-                'device_name' => 'required',
-            ]);
 
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'phone' => $request->phone,
-                'password' => $request->password,
+            $user = $action->handle($request);
+            $token = $user->createToken(request('device_name'))->plainTextToken;
+             return response()->json([
+                'access_tokens' => $token,
+                'token_type' => 'Bearer',
+                 'Message' => 'Registration Successful'
 
             ]);
-
-            return $user->createToken(request('device_name'))->plainTextToken;
 
         }catch (Throwable $e){
 
