@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class LogoutTest extends TestCase
@@ -17,17 +18,21 @@ class LogoutTest extends TestCase
     public function test_logout_existing_user()
     {
 
-        $user = User::create([
-            'name'=> 'raf dev',
-            'email' => 'rafdev@mail.com',
-            'phone' => '+447547728178',
-            'device_name' => 'iphone',
-            'password' => bcrypt('password'),
-        ]);
+        Sanctum::actingAs(
+            $user = User::create(
+                [
+                    'name'=> 'raf dev',
+                    'email' => 'rafdev@mail.com',
+                    'phone' => '+447547728178',
+                    'password' => bcrypt('password'),
+                ]
+            ),
 
-        $token = $user->createToken('iphone')->PlainTextToken;
+        );
 
-        $response = $this->post('api/logout', [
+        $token = $user->createToken('iphone')->plainTextToken;
+
+        $response = $this->post('api/logout',[], [
             'Authorization' => 'Bearer' . $token
 
         ]);

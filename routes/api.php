@@ -15,15 +15,15 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-//Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
-Route::group(['middleware' => ['auth:sanctum']], function ($route){
-    $route->get('/user', [LoginController::class,'user']);
-    $route->post('/logout',[LogoutController::class,'logout']);
+/*
+    Protected routes for user Authentication with sanctum
+*/
+Route::middleware(['auth:sanctum'])->group(function (){
+    Route::get('/user', [LoginController::class,'user']);
+    Route::post('/logout',[LogoutController::class,'logout']);
 });
 
 Route::post('/login',[LoginController::class,'login']);
 Route::post('/registration',[RegistrationController::class,'register']);
+
 

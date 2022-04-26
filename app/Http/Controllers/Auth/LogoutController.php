@@ -9,6 +9,6 @@ class LogoutController extends Controller
 {
     public function logout(Request $request)
     {
-       return $request->user()->currentAccessToken()->delete();
+       return $request->user()->Tokens()->delete();
     }
 }
