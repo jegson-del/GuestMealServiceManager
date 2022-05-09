@@ -20,18 +20,21 @@ class LoginTest extends TestCase
         $user = User::create([
             'name'=> 'raf dev',
             'email' => 'rafdev@mail.com',
-            'phone' => '+447547728178',
+            'phone_number' => '+447547728178',
             'password' => bcrypt('password'),
         ]);
             $response = $this->post('api/login', [
 
                 'email' => $user->email,
                 'password' => 'password',
-                'phone' => '+447547728178',
-                'device_name' => 'iphone'
+                'phone_number' => '+447547728178',
+                'device_name' => 'iphone',
             ]);
+
                 $response->assertSuccessful();
+
         $this->assertNotEmpty($response->getContent());
+
         $this->assertDatabaseHas('personal_access_tokens',[
             'name' => 'iphone',
             'tokenAble_type' => User::class,
@@ -39,8 +42,7 @@ class LoginTest extends TestCase
         ]);
     }
 
-
-    public function  test_get_user_by_token()
+    public function  test_user_cannot_proceed_without_verification()
     {
 
         Sanctum::actingAs(
@@ -48,7 +50,38 @@ class LoginTest extends TestCase
                 [
                     'name'=> 'raf dev',
                     'email' => 'rafdev@mail.com',
-                    'phone' => '+447547728178',
+                    'phone_number' => '+447547728178',
+                    'isVerified' => 0,
+                    'password' => bcrypt('password'),
+                ]
+            ),
+
+        );
+
+        $token = $user->createToken('iphone')->plainTextToken;
+
+        $response = $this->get('api/user', [
+
+            'Authorization' => 'Bearer'. $token
+        ]);
+
+        $response->assertStatus(302);
+
+        $response->isRedirect('/');
+    }
+
+
+
+    public function  test_get_user_by_token_after_verification()
+    {
+
+        Sanctum::actingAs(
+            $user = User::create(
+                [
+                    'name'=> 'raf dev',
+                    'email' => 'rafdev@mail.com',
+                    'phone_number' => '+447547728178',
+                    'isVerified' => 1,
                     'password' => bcrypt('password'),
                 ]
             ),

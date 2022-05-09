@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
+
+use DebugBar\DebugBar;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class RegistrationTest extends TestCase
@@ -22,10 +22,10 @@ class RegistrationTest extends TestCase
 
              'name'=> 'raf dev',
              'email' => 'rafdev@mail.com',
-             'phone' => '+447547728178',
+             'phone_number' => '+447547728178',
              'password' => 'password',
              'password_confirmation' => 'password',
-             'device_name' => 'iphone'
+             'device_name' => 'iphone',
          ]);
 
          $response->assertSuccessful();

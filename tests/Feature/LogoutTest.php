@@ -23,7 +23,8 @@ class LogoutTest extends TestCase
                 [
                     'name'=> 'raf dev',
                     'email' => 'rafdev@mail.com',
-                    'phone' => '+447547728178',
+                    'phone_number' => '+447547728178',
+                    'isVerified' => 1,
                     'password' => bcrypt('password'),
                 ]
             ),

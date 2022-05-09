@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegistrationController;
+use App\Http\Controllers\Auth\VerifyController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,14 +19,19 @@ use Illuminate\Support\Facades\Route;
 /*
     Protected routes for user Authentication with sanctum
 */
-Route::middleware(['auth:sanctum'])->group(function (){
+Route::middleware(['auth:sanctum','TwoFA'])->group(function (){
     Route::get('/user', [LoginController::class,'user']);
     Route::post('/logout',[LogoutController::class,'logout']);
+
 });
+
+Route::put('/verification', [VerifyController::class,'verify'])->middleware(['auth:sanctum']);
 /*
     UnProtected routes for user Authentication with sanctum
 */
 Route::post('/login',[LoginController::class,'login']);
 Route::post('/registration',[RegistrationController::class,'register']);
+
+
 
 
