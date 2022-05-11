@@ -19,6 +19,7 @@ class LoginController extends Controller
 
 
         try {
+
             $user = User::where('email', $request->email)->first();
 
             if (! $user || ! Hash::check($request->password, $user->password)) {
@@ -27,9 +28,15 @@ class LoginController extends Controller
                 ]);
             }
 
-            $token = $user->createToken($request->device_name)->plainTextToken;
 
-            return response()->json(['user' => $user,'token' => $token, 'message' => 'Login successful']);
+            return  $user->createToken($request->device_name)->plainTextToken;
+
+//            return response()->json([
+//                'access_token' => $token,
+//                'token_type' => 'Bearer',
+//                'message' => 'Login successfully '
+//            ]);
+
 
         }catch (Throwable $e)
         {

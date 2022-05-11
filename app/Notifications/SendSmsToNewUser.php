@@ -46,7 +46,7 @@ class SendSmsToNewUser extends Notification implements ShouldQueue
     public function toVonage($notifiable)
     {
         return (new VonageMessage)
-            ->content('Welcome to GuestMenuService App Your Verification Code is' . $this->OTP);
+            ->content('Welcome to GuestMenuService App Your Verification Code is - ' . $this->OTP);
     }
 
     /**

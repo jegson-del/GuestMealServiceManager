@@ -18,7 +18,7 @@ class TwoFA
     public function handle(Request $request, Closure $next)
     {
 
-        if(auth('sanctum')->user()->isVerified){
+        if(auth('sanctum')->user()->isVerified = 1){
 
             return $next($request);
         }

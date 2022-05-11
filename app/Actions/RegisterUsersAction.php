@@ -17,7 +17,7 @@
              if ($user)
              {
                  $OTP = rand(100000, 999999);
-                 Cache::put(['OTP' => $OTP], now()->addSecond(900));
+                 Cache::put(['OTP' => $OTP], now()->addMinutes(300));
              }
 
              return $user;

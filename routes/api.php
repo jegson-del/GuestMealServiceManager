@@ -25,7 +25,7 @@ Route::middleware(['auth:sanctum','TwoFA'])->group(function (){
 
 });
 
-Route::put('/verification', [VerifyController::class,'verify'])->middleware(['auth:sanctum']);
+Route::post('/verification', [VerifyController::class,'verify'])->middleware(['auth:sanctum']);
 /*
     UnProtected routes for user Authentication with sanctum
 */
