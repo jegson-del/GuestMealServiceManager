@@ -4,8 +4,10 @@ namespace App\Http;
 
 
 
+
 use App\Http\Middleware\TwoFA;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 
 
 class Kernel extends HttpKernel
@@ -43,7 +45,7 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-//             EnsureFrontendRequestsAreStateful::class,
+             EnsureFrontendRequestsAreStateful::class,
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],

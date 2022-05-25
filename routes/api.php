@@ -19,17 +19,16 @@ use Illuminate\Support\Facades\Route;
 /*
     Protected routes for user Authentication with sanctum
 */
-Route::middleware(['auth:sanctum','TwoFA'])->group(function (){
-    Route::get('/user', [LoginController::class,'user']);
-    Route::post('/logout',[LogoutController::class,'logout']);
 
-});
+Route::middleware(['auth:sanctum','TwoFA'])->get('/user', [LoginController::class,'user']);
+Route::post('/logout',[LogoutController::class,'logout'])->middleware('auth:sanctum');
+
 
 Route::post('/verification', [VerifyController::class,'verify'])->middleware(['auth:sanctum']);
 /*
     UnProtected routes for user Authentication with sanctum
 */
-Route::post('/login',[LoginController::class,'login']);
+Route::middleware('TwoFA')->post('/login',[LoginController::class,'login']);
 Route::post('/registration',[RegistrationController::class,'register']);
 
 

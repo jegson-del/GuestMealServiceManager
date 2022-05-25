@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use http\Client\Request;
+
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -10,7 +10,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Cache;
 use Laravel\Sanctum\HasApiTokens;
-use PhpParser\Node\Stmt\Static_;
+
 
 class User extends Authenticatable
 {
@@ -53,17 +53,16 @@ class User extends Authenticatable
     ];
 
 
-
     public function OTP(){
 
         return Cache::get('OTP');
     }
 
 
-    public static function isVerified(): bool
-    {
-        return User::update(['isVerified' => 1]);
-    }
+//    public static function isVerified(): bool
+//    {
+//        return self::update(['isVerified' => 1]);
+//    }
 
     /**
 

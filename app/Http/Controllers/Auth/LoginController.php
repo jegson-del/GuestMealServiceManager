@@ -7,15 +7,21 @@ use App\Http\Requests\LoginRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+
 use Illuminate\Validation\ValidationException;
 use Throwable;
 
+
 class LoginController extends Controller
 {
-    /**
-     * @throws ValidationException
-     */
-    public function login(LoginRequest $request){
+
+//    public function __construct()
+//    {
+//        $this->middleware('TwoFA');
+//    }
+
+    public function login(LoginRequest $request)
+    {
 
 
         try {
@@ -23,26 +29,28 @@ class LoginController extends Controller
             $user = User::where('email', $request->email)->first();
 
             if (! $user || ! Hash::check($request->password, $user->password)) {
-                throw ValidationException::withMessages([
-                    'error' => ['The provided credentials are incorrect.'],
+
+                throw  ValidationException::withMessages([
+                    'email' => ['The provided credentials are incorrect.'],
+
                 ]);
+
             }
 
+            $token = $user->createToken($request->device_name)->plainTextToken;
 
-            return  $user->createToken($request->device_name)->plainTextToken;
-
-//            return response()->json([
-//                'access_token' => $token,
-//                'token_type' => 'Bearer',
-//                'message' => 'Login successfully '
-//            ]);
-
+            return response()->json([
+                'user' => $user->name,
+                'access_token' => $token,
+                'token_type' => 'Bearer',
+                'message' => 'Login Successfully'
+            ]);
 
         }catch (Throwable $e)
         {
             report($e);
 
-            return false;
+            return response()->json($e->getMessage());
 
         }
 

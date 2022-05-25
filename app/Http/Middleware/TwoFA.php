@@ -2,9 +2,10 @@
 
 namespace App\Http\Middleware;
 
+
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class TwoFA
 {
@@ -18,10 +19,13 @@ class TwoFA
     public function handle(Request $request, Closure $next)
     {
 
-        if(auth('sanctum')->user()->isVerified = 1){
+        $request->user = DB::table('users')->where('isVerified',1)->first();
+
+        if($request->user ){
 
             return $next($request);
         }
+
         return redirect('/')->with('verify your account to continue');
     }
 }
